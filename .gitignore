@@ -1,0 +1,14 @@
+.classpath
+.project
+.settings/
+bin
+build
+target
+dependency-reduced-pom.xml
+*.sublime-*
+/scratch
+.gradle
+Guardfile
+README.html
+*.iml
+.idea
