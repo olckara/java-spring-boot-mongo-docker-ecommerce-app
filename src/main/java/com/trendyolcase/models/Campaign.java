@@ -2,6 +2,7 @@ package com.trendyolcase.models;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.lang.Nullable;
 
 import javax.validation.constraints.NotNull;
 
@@ -22,8 +23,9 @@ public class Campaign {
     @NotNull(message = "Campaign Discount Type is compulsory")
     private String discountType;
     @NotNull(message = "Campaign Discount is compulsory")
-    private long discount;
-    private long maxDiscount;
+    private Long discount;
+    @Nullable
+    private Long maxDiscount;
 
     public Campaign() {
     }
@@ -34,8 +36,8 @@ public class Campaign {
             String typeId,
             String typeName,
             String discountType,
-            long discount,
-            long maxDiscount
+            Long discount,
+            Long maxDiscount
     ) {
         this.name = name;
         this.type = type;
@@ -44,6 +46,10 @@ public class Campaign {
         this.discountType = discountType;
         this.discount = discount;
         this.maxDiscount = maxDiscount;
+    }
+
+    public boolean hasValidMaxDiscount() {
+        return (discountType.equals("ORAN") && maxDiscount != null) || discountType.equals("TUTAR");
     }
 
     // *** GETTERS ***
@@ -71,11 +77,11 @@ public class Campaign {
         return discountType;
     }
 
-    public long getDiscount() {
+    public Long getDiscount() {
         return discount;
     }
 
-    public long getMaxDiscount() {
+    public Long getMaxDiscount() {
         return maxDiscount;
     }
 

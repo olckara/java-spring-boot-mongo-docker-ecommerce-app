@@ -3,6 +3,7 @@ package com.trendyolcase.services;
 import com.trendyolcase.models.Campaign;
 import com.trendyolcase.repositories.CampaignRepo;
 import com.trendyolcase.utils.exceptions.CampaignNotFoundException;
+import com.trendyolcase.utils.exceptions.CampaignNotValidException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,8 +15,12 @@ public class CampaignService {
     @Autowired
     private CampaignRepo campaignRepo;
 
-    public Campaign create(Campaign campaign){
-        return campaignRepo.insert(campaign);
+    public Campaign create(Campaign campaign) {
+        if (campaign.hasValidMaxDiscount()) {
+            return campaignRepo.insert(campaign);
+        } else {
+            throw new CampaignNotValidException("Campaign not valid.");
+        }
     }
 
     public List<Campaign> getAll() {
@@ -39,7 +44,7 @@ public class CampaignService {
     public Campaign update(String id, Campaign campaign) {
         Optional<Campaign> maybeCampaign = campaignRepo.findById(id);
         if (maybeCampaign.isPresent()) {
-            String currentCampaignId =  maybeCampaign.get().getId();
+            String currentCampaignId = maybeCampaign.get().getId();
             campaign.setId(currentCampaignId);
             campaignRepo.deleteById(currentCampaignId);
             return campaignRepo.insert(campaign);
