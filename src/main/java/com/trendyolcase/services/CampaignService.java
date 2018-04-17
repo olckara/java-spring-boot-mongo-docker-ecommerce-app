@@ -62,4 +62,14 @@ public class CampaignService {
         }
     }
 
+    public boolean existsWithTypeId(String typeId) {
+
+        return campaignRepo.findByTypeId(typeId).size() > 0;
+
+    }
+
+    public List<Campaign> findCampaigns(List<String> typeIds) {
+        return campaignRepo.findByTypeIdIn(typeIds);
+    }
+
 }
